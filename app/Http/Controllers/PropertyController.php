@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Property;
 use App\Http\Requests\StorePropertyRequest;
+use App\Http\Requests\UpdatePropertyRequest;
 use Inertia\Inertia;
 class PropertyController extends Controller
 {
@@ -47,32 +48,32 @@ class PropertyController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StorePropertyRequest $request)
-{
-    $validatedData = $request->validated();
-
-    // Créez une nouvelle instance de Property
-    $property = new Property();
-
-    // Assignez manuellement les champs de la requête aux propriétés de Property
-    $property->nom = $validatedData['nom'];
-    $property->prenom = $validatedData['prenom'];
-    $property->localisation = $validatedData['localisation'];
-    $property->m2 = $validatedData['m2'];
-    $property->type = $validatedData['type'];
-    $property->etat = $validatedData['etat'];
-    $property->nombre_chambres = $validatedData['nombre_chambres'];
-    $property->nombre_salles_de_bain = $validatedData['nombre_salles_de_bain'];
-    $property->parking = $validatedData['parking'];
-    $property->garage = $validatedData['garage'];
-    $property->terrain = $validatedData['terrain'];
-
-    // Enregistrez la nouvelle propriété dans la base de données
-    $property->save();
-
-    // Redirigez l'utilisateur vers l'index des propriétés avec un message de succès
-    return redirect()->route('properties.index')
-        ->with('success', 'Propriété créée avec succès !');
-}
+    {
+        $validatedData = $request->validated();
+    
+        // Créez une nouvelle instance de Property
+        $property = new Property();
+    
+        // Assignez manuellement les champs de la requête aux propriétés de Property
+        $property->nom = $validatedData['nom'];
+        $property->prenom = $validatedData['prenom'];
+        $property->localisation = $validatedData['localisation'];
+        $property->m2 = $validatedData['m2'];
+        $property->type = $validatedData['type'];
+        $property->etat = $validatedData['etat'];
+        $property->nombre_chambres = $validatedData['nombre_chambres'];
+        $property->nombre_salles_de_bain = $validatedData['nombre_salles_de_bain'];
+        $property->parking = $validatedData['parking'];
+        $property->garage = $validatedData['garage'];
+        $property->terrain = $validatedData['terrain'];
+    
+        // Enregistrez la nouvelle propriété dans la base de données
+        $property->save();
+    
+        // Redirigez l'utilisateur vers l'index des propriétés avec un message de succès
+        return redirect()->route('properties.index')
+            ->with('success', 'Propriété créée avec succès !');
+    }
 
 
     /**
@@ -88,15 +89,37 @@ class PropertyController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('Properties/Edit', [
+            'property' => Property::findOrFail($id),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePropertyRequest $request, $id)
     {
-        //
+        $property = Property::findOrFail($id);
+        $validatedData = $request->validated();
+
+        // Assignez manuellement les champs de la requête aux propriétés de Property
+        $property->nom = $validatedData['nom'];
+        $property->prenom = $validatedData['prenom'];
+        $property->localisation = $validatedData['localisation'];
+        $property->m2 = $validatedData['m2'];
+        $property->type = $validatedData['type'];
+        $property->etat = $validatedData['etat'];
+        $property->nombre_chambres = $validatedData['nombre_chambres'];
+        $property->nombre_salles_de_bain = $validatedData['nombre_salles_de_bain'];
+        $property->parking = $validatedData['parking'];
+        $property->garage = $validatedData['garage'];
+        $property->terrain = $validatedData['terrain'];
+
+        // Enregistrez la nouvelle propriété dans la base de données
+        $property->save();
+
+        return redirect()->route('properties.index')
+            ->with('success', 'Propriété mise à jour avec succès !');
     }
 
     /**
