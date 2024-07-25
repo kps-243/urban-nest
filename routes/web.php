@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PropertyController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -13,6 +14,16 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/contact', function () {
+    return Inertia::render('Contact/Index');
+})->name('contact');
+Route::post('/contact', [ContactController::class, 'sendMail'])->name('contact.sendMail');
+
+Route::get('/qui-sommes-nous', function () {
+    return Inertia::render('Qui-sommes-nous/Index');
+})->name('about');
+
 Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
 Route::get('/properties/create', [PropertyController::class, 'create'])->name('properties.create');
 Route::post('/properties/store', [PropertyController::class, 'store'])->name('properties.store');
