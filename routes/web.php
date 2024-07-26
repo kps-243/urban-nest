@@ -34,6 +34,7 @@ Route::post('/properties/store', [PropertyController::class, 'store'])->name('pr
 Route::get('/properties/edit/{id}', [PropertyController::class, 'edit'])->name('properties.edit');
 Route::put('/properties/update/{id}', [PropertyController::class, 'update'])->name('properties.update');
 Route::delete('/properties/delete/{id}', [PropertyController::class, 'destroy'])->name('properties.destroy');
+Route::get('/properties/front', [PropertyController::class, 'frontindex'])->name('properties.frontindex');
 
 Route::get('/properties/{id}', [PropertyController::class, 'show'])->name('properties.single');
 

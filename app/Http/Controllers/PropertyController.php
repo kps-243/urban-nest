@@ -37,6 +37,30 @@ class PropertyController extends Controller
         ]);
     }
 
+    public function frontindex()
+    {
+        $properties = Property::all();
+        
+        return Inertia::render('Properties/FrontIndex', [
+            'properties' => $properties->map(function ($property) {
+                return [
+                    'id' => $property->id,
+                    'nom' => $property->nom,
+                    'prenom' => $property->prenom,
+                    'localisation' => $property->localisation,
+                    'm2' => $property->m2,
+                    'type' => $property->type,
+                    'etat' => $property->etat,
+                    'nombre_chambre' => $property->nombre_chambre,
+                    'nombre_salle_bain' => $property->nombre_salle_bain,
+                    'parking' => $property->parking,
+                    'garage' => $property->garage,
+                    'terrain' => $property->terrain,
+                ];
+            }),
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
