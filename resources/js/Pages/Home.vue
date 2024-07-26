@@ -1,7 +1,7 @@
 <template>
     <div class="home-page">
       <!-- Hero Section -->
-      <section class="hero bg-cover bg-center h-screen flex items-center justify-center text-white " style="background-image: url('/img/hero-background.jpg');">
+      <section class="hero bg-cover bg-center h-screen flex items-center justify-center text-white" style="background-image: url('/img/hero-background.jpg');">
         <div class="text-center px-4">
           <h1 class="text-4xl md:text-6xl font-bold mb-4">Bienvenue à Urbannest</h1>
           <p class="text-lg md:text-2xl mb-8">Votre solution immobilière de confiance</p>
@@ -31,17 +31,25 @@
         </div>
       </section>
   
-      <!-- Featured Properties Section -->
-      <section class="featured-properties py-16">
+      <!-- Latest Properties Section -->
+      <section class="latest-properties py-16 bg-gray-100">
         <div class="container mx-auto px-4 text-center">
-          <h2 class="text-3xl font-bold mb-8">Propriétés en vedette</h2>
+          <h2 class="text-3xl font-bold mb-8">Nos Dernières Propriétés</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div v-for="property in featuredProperties" :key="property.id" class="property bg-white p-6 rounded-lg shadow-md">
-              <img :src="property.image" alt="Property Image" class="w-full h-48 object-cover rounded-t-lg">
+            <div v-for="property in latestProperties" :key="property.id" class="property bg-white p-6 rounded-lg shadow-md">
+              <img :src="property.image_url ? property.image_url : '/img/property1.jpg'" alt="Property Image" class="w-full h-48 object-cover rounded-t-lg">
               <div class="p-4">
-                <h3 class="text-2xl font-bold mb-2">{{ property.name }}</h3>
-                <p class="text-gray-700 mb-4">{{ property.location }}</p>
-                <p class="text-lg font-bold text-blue-800">{{ property.price }} €</p>
+                <h3 class="text-2xl font-bold mb-2">{{ property.nom }}</h3>
+                <p class="text-gray-700 mb-2"><strong>Prénom:</strong> {{ property.prenom }}</p>
+                <p class="text-gray-700 mb-2"><strong>Localisation:</strong> {{ property.localisation }}</p>
+                <p class="text-gray-700 mb-2"><strong>Surface:</strong> {{ property.m2 }} m²</p>
+                <p class="text-gray-700 mb-2"><strong>Type:</strong> {{ property.type }}</p>
+                <p class="text-gray-700 mb-2"><strong>État:</strong> {{ property.etat }}</p>
+                <p class="text-gray-700 mb-2"><strong>Chambres:</strong> {{ property.nombre_chambre }}</p>
+                <p class="text-gray-700 mb-2"><strong>Salles de Bain:</strong> {{ property.nombre_salle_bain }}</p>
+                <p class="text-gray-700 mb-2"><strong>Parking:</strong> {{ property.parking ? 'Oui' : 'Non' }}</p>
+                <p class="text-gray-700 mb-2"><strong>Garage:</strong> {{ property.garage ? 'Oui' : 'Non' }}</p>
+                <p class="text-gray-700 mb-2"><strong>Terrain:</strong> {{ property.terrain ? 'Oui' : 'Non' }}</p>
               </div>
             </div>
           </div>
@@ -60,32 +68,11 @@
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+  import { usePage } from '@inertiajs/vue3';
   
-  // Exemple de propriétés en vedette
-  const featuredProperties = ref([
-    {
-      id: 1,
-      name: 'Villa de luxe',
-      location: 'Paris, France',
-      price: '2,500,000',
-      image: '/img/property1.jpg'
-    },
-    {
-      id: 2,
-      name: 'Appartement moderne',
-      location: 'Lyon, France',
-      price: '800,000',
-      image: '/img/property2.jpg'
-    },
-    {
-      id: 3,
-      name: 'Maison familiale',
-      location: 'Marseille, France',
-      price: '1,200,000',
-      image: '/img/property3.jpg'
-    }
-  ]);
+  // Récupération des données depuis les props
+  const { latestProperties } = usePage().props;
+  
   </script>
   
   <style scoped>

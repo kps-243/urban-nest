@@ -14,6 +14,7 @@ const form = useForm({
   email: "",
   password: "",
   password_confirmation: "",
+  role: "",
   terms: false,
 });
 
@@ -93,7 +94,14 @@ const submit = () => {
             :message="form.errors.password_confirmation"
           />
         </div>
-
+        <!-- Ajout du champ de sélection du rôle -->
+        <div class="mt-4">
+          <jet-label for="role" value="Role" />
+          <select id="role" v-model="form.role" class="mt-1 block w-full border">
+            <option value="client">Client</option>
+            <option value="commercial">Commercial</option>
+          </select>
+        </div>
         <div
           v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature"
           class="mt-4"

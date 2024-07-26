@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Property;
+use App\Models\User;
 use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use Inertia\Inertia;
@@ -15,26 +16,32 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        $properties = Property::all();
+        if (auth()->user()->role === 'admin'|| auth()->user()->role === 'commercial'){
+            $properties = Property::all();
         
-        return Inertia::render('Properties/Index', [
-            'properties' => $properties->map(function ($property) {
-                return [
-                    'id' => $property->id,
-                    'nom' => $property->nom,
-                    'prenom' => $property->prenom,
-                    'localisation' => $property->localisation,
-                    'm2' => $property->m2,
-                    'type' => $property->type,
-                    'etat' => $property->etat,
-                    'nombre_chambre' => $property->nombre_chambre,
-                    'nombre_salle_bain' => $property->nombre_salle_bain,
-                    'parking' => $property->parking,
-                    'garage' => $property->garage,
-                    'terrain' => $property->terrain,
-                ];
-            }),
-        ]);
+            return Inertia::render('Properties/Index', [
+                'properties' => $properties->map(function ($property) {
+                    return [
+                        'id' => $property->id,
+                        'nom' => $property->nom,
+                        'prenom' => $property->prenom,
+                        'localisation' => $property->localisation,
+                        'm2' => $property->m2,
+                        'type' => $property->type,
+                        'etat' => $property->etat,
+                        'nombre_chambre' => $property->nombre_chambre,
+                        'nombre_salle_bain' => $property->nombre_salle_bain,
+                        'parking' => $property->parking,
+                        'garage' => $property->garage,
+                        'terrain' => $property->terrain,
+                    ];
+                }),
+            ]);
+        } else {
+            return Inertia::render('Home')
+                ->with('error', 'Vous n\'avez pas les droits pour éditer une propriété');
+        }
+        
     }
 
     public function frontindex()
@@ -66,7 +73,12 @@ class PropertyController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Properties/Create');
+        if (auth()->user()->role === 'admin' || auth()->user()->role === 'commercial'){
+            return Inertia::render('Properties/Create');
+        } else {
+            return Inertia::render('Home')
+            ->with('error', 'Vous n\'avez pas les droits pour éditer une propriété');
+        }
     }
 
     /**
@@ -124,9 +136,14 @@ class PropertyController extends Controller
      */
     public function edit(string $id)
     {
-        return Inertia::render('Properties/Edit', [
-            'property' => Property::findOrFail($id),
-        ]);
+        if (auth()->user()->role !== 'admin' && auth()->user()->role !== 'commercial'){
+            return Inertia::render('Properties/Edit', [
+                'property' => Property::findOrFail($id),
+            ]);
+        } else {
+            return Inertia::render('Home')
+                ->with('error', 'Vous n\'avez pas les droits pour éditer une propriété');
+        }
     }
 
     /**

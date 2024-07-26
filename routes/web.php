@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -15,9 +18,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/home', function () {
-    return Inertia::render('Home');
-});
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 Route::get('/contact', function () {
     return Inertia::render('Contact/Index');
@@ -38,7 +39,7 @@ Route::get('/properties/front', [PropertyController::class, 'frontindex'])->name
 
 Route::get('/properties/{id}', [PropertyController::class, 'show'])->name('properties.single');
 
-
+Route::get('/users', [UserController::class, 'index'])->name('user.index');
 
 Route::middleware([
     'auth:sanctum',

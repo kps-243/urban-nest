@@ -18,7 +18,7 @@
         />
       </div>
     </section>
-    
+
       <!-- Properties Section -->
       <section class="properties py-16 bg-gray-100">
       <div class="container mx-auto px-4 text-center">
@@ -49,7 +49,7 @@
         <div class="container mx-auto px-4 text-center">
           <h2 class="text-3xl font-bold mb-4">Contactez-nous</h2>
           <p class="text-lg mb-8">Vous avez des questions ? N'hésitez pas à nous contacter. Nous sommes là pour vous aider.</p>
-          <button class="bg-white text-blue-800 font-bold py-2 px-4 rounded">Envoyer un message</button>
+          <a href="" class="bg-white text-blue-800 font-bold py-2 px-4 rounded">Envoyer un message</a>
         </div>
       </section>
     </div>
@@ -59,6 +59,9 @@
 import { ref, computed } from 'vue';
 import { usePage } from '@inertiajs/vue3';
   
+const { props: pageProps } = usePage();
+// const contactRoute = computed(() => pageProps.value.ziggy.routes.contact.uri);  // assuming 'contact' is the name of the route
+
   const props = defineProps({
       properties: {
         type: Array,
