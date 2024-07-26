@@ -4,9 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
-class Property extends Model
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
+class Property extends Model implements HasMedia
 {
+    use HasSlug;
+    use InteractsWithMedia;
     use HasFactory;
     protected $fillable = [
         'nom',
@@ -28,4 +33,13 @@ class Property extends Model
         'garage' => 'boolean',
         'terrain' => 'boolean',
     ];
+
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('nom')
+            ->saveSlugsTo('slug')
+            ->usingSeparator('-')
+            ->allowDuplicateSlugs();
+    }
 }

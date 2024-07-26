@@ -14,9 +14,28 @@ const form = useForm({
     parking: false,
     garage: false,
     terrain: false,
+    gallery: [],
 });
 
+const handleFileChange = (event) => {
+  form.gallery = Array.from(event.target.files);
+};
+
 const submit = () => {
+  const data = new FormData();
+
+  // Append form data
+  for (const [key, value] of Object.entries(form)) {
+    if (key !== 'gallery') {
+      data.append(key, value);
+    }
+  }
+
+  // Append files
+  for (const file of form.gallery) {
+    data.append('gallery[]', file);
+  }
+  
   form.post(route("properties.store"), {
     onSuccess: () => {
       console.log("Form submitted successfully");
@@ -142,6 +161,10 @@ const submit = () => {
           v-model="form.terrain"
           class="mt-1 block w-full"
         />
+      </div>
+      <div class="mb-4">
+        <label for="gallery">Gallery Images</label>
+        <input type="file" id="gallery" multiple @change="handleFileChange" class="mt-1 block w-full" />
       </div>
       <div class="mt-6">
         <PrimaryButton>

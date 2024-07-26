@@ -15,6 +15,10 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/home', function () {
+    return Inertia::render('Home');
+});
+
 Route::get('/contact', function () {
     return Inertia::render('Contact/Index');
 })->name('contact');
@@ -30,6 +34,9 @@ Route::post('/properties/store', [PropertyController::class, 'store'])->name('pr
 Route::get('/properties/edit/{id}', [PropertyController::class, 'edit'])->name('properties.edit');
 Route::put('/properties/update/{id}', [PropertyController::class, 'update'])->name('properties.update');
 Route::delete('/properties/delete/{id}', [PropertyController::class, 'destroy'])->name('properties.destroy');
+
+Route::get('/properties/{id}', [PropertyController::class, 'show'])->name('properties.single');
+
 
 
 Route::middleware([

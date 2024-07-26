@@ -33,6 +33,7 @@ class StorePropertyRequest extends FormRequest
             'parking' => 'required|boolean',
             'garage' => 'required|boolean',
             'terrain' => 'required|boolean',
+            'gallery.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048' // Ajoutez cette règle pour les images
         ];
     }
 }

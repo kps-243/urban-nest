@@ -7,6 +7,7 @@ use App\Models\Property;
 use App\Http\Requests\StorePropertyRequest;
 use App\Http\Requests\UpdatePropertyRequest;
 use Inertia\Inertia;
+// use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class PropertyController extends Controller
 {
     /**
@@ -54,6 +55,11 @@ class PropertyController extends Controller
         // Créez une nouvelle instance de Property
         $property = new Property();
     
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $property->addMedia($file)->toMediaCollection('gallery');
+            }
+        }
         // Assignez manuellement les champs de la requête aux propriétés de Property
         $property->nom = $validatedData['nom'];
         $property->prenom = $validatedData['prenom'];
@@ -79,10 +85,15 @@ class PropertyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        // $property = Property::where('id', $id)->with('media')->firstOrFail();
+
+        return Inertia::render('Properties/Single', [
+            'property' => Property::findOrFail($id),
+        ]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -102,6 +113,12 @@ class PropertyController extends Controller
         $property = Property::findOrFail($id);
         $validatedData = $request->validated();
 
+        if ($request->hasFile('gallery')) {
+            $property->clearMediaCollection('gallery'); // Supprimez les anciennes images si nécessaire
+            foreach ($request->file('gallery') as $file) {
+                $property->addMedia($file)->toMediaCollection('gallery');
+            }
+        }
         // Assignez manuellement les champs de la requête aux propriétés de Property
         $property->nom = $validatedData['nom'];
         $property->prenom = $validatedData['prenom'];
